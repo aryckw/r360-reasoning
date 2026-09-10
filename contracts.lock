@@ -1,0 +1,7 @@
+# Pinned R360 contract sources (ADR-0008). Written by tools/contracts_vendor.py.
+# Do not hand-edit: the gate recomputes proto_tree_sha256 from contracts/proto and fails
+# on mismatch.
+contract_version = "1.0.0-alpha.1"
+contract_tag = "contracts/v1.0.0-alpha.1"
+contract_revision = "f9cd4ad3c4c75d813fc52c423951a1d393fa3b20"
+proto_tree_sha256 = "b4ec52b6589daf57ba2d92428b5ef06504a9748b018be02580756acf5b444356"

@@ -1,0 +1,74 @@
+# r360-reasoning — containerized execution.
+#
+#   docker compose run --rm gate     the authoritative gate (or: .\gate.ps1)
+#   docker compose run --rm shell    interactive shell in the same image
+#   docker compose up service        run the service against the local broker and database
+#
+# The gate needs a real broker and a real database: idempotent intake is a claim about
+# what happens when the same message arrives twice and a row already exists, and neither
+# half can be proven against a test double.
+name: r360-reasoning
+
+x-base: &base
+  build:
+    context: .
+  volumes:
+    - .:/work
+  working_dir: /work
+  environment:
+    R360_MQTT_HOST: mqtt
+    R360_MQTT_PORT: "1883"
+    R360_POSTGRES_DSN: postgresql://r360:r360-dev-only@postgres:5432/r360
+
+services:
+  mqtt:
+    image: eclipse-mosquitto:2.0.18
+    command: ["mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]
+    volumes:
+      - ./compose/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mosquitto_sub -h localhost -t healthcheck -C 1 -W 2 -E"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+
+  postgres:
+    image: postgres:17.5
+    environment:
+      POSTGRES_USER: r360
+      POSTGRES_PASSWORD: r360-dev-only
+      POSTGRES_DB: r360
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U r360"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  gate:
+    <<: *base
+    depends_on:
+      mqtt:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    command: ["make", "gate"]
+
+  shell:
+    <<: *base
+    depends_on:
+      mqtt:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    command: ["bash"]
+
+  service:
+    <<: *base
+    depends_on:
+      mqtt:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    ports:
+      - "50052:50052"
+    command: ["python", "-m", "r360_reasoning.service", "--config", "configs/service.dev.json"]
