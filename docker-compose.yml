@@ -12,6 +12,9 @@ name: r360-reasoning
 x-base: &base
   build:
     context: .
+    # The gate runs with the source bind-mounted; the self-contained service image
+    # is a later stage, built by r360-integration.
+    target: toolchain
   volumes:
     - .:/work
   working_dir: /work
