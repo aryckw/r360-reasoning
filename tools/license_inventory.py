@@ -19,7 +19,11 @@ from pathlib import Path
 APT_BLOCK = re.compile(r"apt-get install[^\n]*\n(.*?)&& rm -rf", re.DOTALL)
 APT_TOKEN = re.compile(r"^\s*([a-z0-9][a-z0-9+.-]*)(?:=(\S+))?\s*$", re.MULTILINE)
 LINE_CONTINUATION = chr(92)  # apt install lines are backslash-continued
-PIP_PIN = re.compile(r"^([A-Za-z0-9][A-Za-z0-9._-]*)==(\S+)\s*$", re.MULTILINE)
+# Extras are part of the name a requirements file pins ("psycopg[binary]"), so the
+# inventory has to recognise them or a real dependency looks undeclared.
+PIP_PIN = re.compile(
+    r"^([A-Za-z0-9][A-Za-z0-9._-]*(?:\[[A-Za-z0-9,._-]+\])?)==(\S+)\s*$", re.MULTILINE
+)
 
 
 def pinned(dockerfile: Path, requirements: Path) -> dict[str, tuple[str, str]]:
