@@ -6,9 +6,9 @@ demonstrated.
 
 | # | Milestone | Status |
 |---|---|---|
-| M0 | service skeleton, idempotent intake, persistence, gate | IN PROGRESS |
-| M1 | consume replay lifecycle and diagnostics from RF Evidence | TODO |
-| M8 | reasoning foundation: rules, temporal correlation, confidence, bounded LLM | TODO |
+| M0 | service skeleton, idempotent intake, persistence, gate | DONE |
+| M1 | no work in this repository; the program's M1 lives in rf-evidence and integration | — |
+| M8 | reasoning foundation: lifecycle and diagnostic intake, rules, temporal correlation, confidence, bounded LLM | TODO |
 | M9 | event fusion, minimal mission episodes, evidence-linked AAR | TODO |
 | M10 | World-State Adapter correlation | TODO |
 
