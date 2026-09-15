@@ -11,6 +11,7 @@ demonstrated.
 | M2 | no work in this repository; the native dataplane lives in rf-evidence, its stack proof in integration | — |
 | M3 | no code change; the M0 intake persists the detection evidence RF Evidence now produces, proven in integration | — |
 | M4 | no code change; the M0 intake persists WAVEFORM_CLASSIFICATION and RADAR_BEHAVIOR with their classifications and model provenance intact, proven in integration | — |
+| M5 | no code change; the M0 intake persists EW_BEHAVIOR -- the subject kind, the assessment vector, the EW classifications and model provenance -- intact, proven in integration | — |
 | M8 | reasoning foundation: lifecycle and diagnostic intake, rules, temporal correlation, confidence, bounded LLM | TODO |
 | M9 | event fusion, minimal mission episodes, evidence-linked AAR | TODO |
 | M10 | World-State Adapter correlation | TODO |
